@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
-// import { BrowserRouter as Router, Route } from "react-router-dom";
 import Navbar from './components/common/Navbar'
 import { Login } from './components/pages/Login'
 import { Signup } from './components/pages/Signup'

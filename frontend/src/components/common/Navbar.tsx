@@ -7,73 +7,42 @@
 // put the links inside li tag which will be shown on hover.
 //then put the login & signup button if token is null else put the cart with totalItems and profile dropdown button.
 
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, matchPath } from "react-router-dom";
 import { NavbarLinks } from "../../data/navbar-links";
-import { match } from "assert";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuPortal,
     DropdownMenuSeparator,
     DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { User, CreditCard, LogOut } from "lucide-react";
-
-
-// import { useSelector } from "react-redux";
-// import { ACCOUNT_TYPE } from "../../utils/constant";
-// import ProfileDropdown from "../core/auth/ProfileDropdown";
-// import { AiOutlineShoppingCart } from "react-icons/ai";
-// import { BsChevronDown } from "react-icons/bs";
-// import { apiConnector } from "../../services/apiConnector";
-// import { courseEndpoints } from "../../services/api";
-// import { FiMenu } from "react-icons/fi";
-// import { BiRightArrow } from "react-icons/bi";
-// import { GiCancel } from "react-icons/gi";
 import { FaRegStar } from "react-icons/fa6";
 import Profile from "./Profile";
-import { Button } from "../ui/button";
 const Navbar = () => {
     //   const { token } = useSelector((store) => store.auth);
     //   const { user } = useSelector((store) => store.profile);
     //   const { totalItems } = useSelector((store) => store.cart);
     const token = "token";
-    const plan = "free";
+    // const plan = "free";
 
-    //   const [hover, setHover] = useState(false);
-    const [navVisible, setNavVisible] = useState(false);
-    const [optionsDropdown, setOptionsDropdown] = useState(false);
+    // const [navVisible, setNavVisible] = useState(false);
     const [detailsModal, setDetailsModal] = useState(false);
-    const [moreOptionsDropdown, setMoreOptionsDropdown] = useState(false);
-    const [moreDetailsModal, setMoreDetailsModal] = useState(false);
 
     const location = useLocation();
     const matchRoute = (route: any) => {
         return matchPath({ path: route }, location.pathname);
     };
-    const toggleNav = () => {
-        setNavVisible(!navVisible);
-    };
-
-    const clicked = () => {
-        console.log("clicked");
-        setDetailsModal(false);
-    }
+    // const toggleNav = () => {
+    //     setNavVisible(!navVisible);
+    // };
 
     const logout = () => {
         console.log("logout");

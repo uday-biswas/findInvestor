@@ -1,10 +1,8 @@
 import React from 'react';
-import { Button } from '@/components/ui/button'
 import { SaveToList } from '@/components/common/SaveToList'
 import { CreateNewList } from '../common/CreateNewList';
 import { InvestorSelect } from '../../data/InvestorSelect';
 import { Input } from '../ui/input';
-import { Label } from '../ui/label';
 import { ScrollArea } from '../ui/scroll-area';
 import { Checkbox } from '../ui/checkbox';
 import {
@@ -12,7 +10,6 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
