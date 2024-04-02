@@ -27,7 +27,7 @@ export const InvestorSelect = [
     },
     {
         title: "Fund Type",
-        name: "fundType",
+        name: "typeOfFund",
         data: [
             "Angel",
             "Individual",
@@ -66,7 +66,7 @@ export const InvestorSelect = [
     },
     {
         title: "Investment Stage Filter",
-        name: "stagefilter",
+        name: "stagePreferences",
         data: [
             "Seed",
             "Early Stage Venture",

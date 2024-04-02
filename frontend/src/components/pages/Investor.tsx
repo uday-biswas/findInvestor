@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SaveToList } from '@/components/common/SaveToList'
 import { CreateNewList } from '../common/CreateNewList';
 import { InvestorSelect } from '../../data/InvestorSelect';
@@ -13,9 +13,36 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis } from "@/components/ui/pagination"
+import { apiConnector } from '@/services/apiConnector';
+import { endpoints } from '@/services/api';
+import InvestorCard from '../common/InvestorCard';
 
 
 const Investor: React.FC = () => {
+
+    const [investors, setInvestors] = useState([]);
+
+    const fetchInvestors = async () => {
+        try {
+            console.log("url: ", endpoints.INVESTOR_API + `?limit=${25}&skip=${0}`);
+            console.log("env: ", import.meta.env.VITE_BACKEND_URL);
+            const result = await apiConnector(
+                "GET",
+                endpoints.INVESTOR_API + `?limit=${25}&skip=${0}`
+            );
+            console.log("result:", JSON.stringify(result.data));
+            setInvestors(result?.data);
+            // console.log("subLinks", subLinks);
+        } catch (err) {
+            console.log(`error while fetching subLinks : - > ${err}`);
+        }
+    };
+
+    useEffect(() => {
+        fetchInvestors();
+    }, []);
+
     return (
         <div className='flex flex-col w-11/12 mx-auto'>
             <div className='flex justify-between mt-8'>
@@ -53,7 +80,7 @@ const Investor: React.FC = () => {
                         ))}
                     </div>
                 </ScrollArea>
-                <div className='flex flex-col w-11/12 mx-auto p-10'>
+                <ScrollArea className='flex flex-col w-11/12 mx-auto pt-5 pl-10 h-[452px]'>
                     <div className='flex justify-between'>
                         <Input placeholder='Search by Name, Country, Industry, Fund Type' type='text' className='rounded w-[400px]' />
                         <div className='flex gap-3'>
@@ -72,8 +99,38 @@ const Investor: React.FC = () => {
                             </Select>
                         </div>
                     </div>
-                    <div></div>
-                </div>
+                    <div className='flex flex-col gap-y-6 pt-4'>
+                        {
+                            investors?.map((investor: any, i: number) => (
+                                <InvestorCard key={i} investor={investor} />
+                            ))
+                        }
+                        <Pagination>
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious href="#" />
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationLink href="#">1</PaginationLink>
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationLink href="#" isActive>
+                                        2
+                                    </PaginationLink>
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationLink href="#">3</PaginationLink>
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationEllipsis />
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationNext href="#" />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    </div>
+                </ScrollArea>
             </div>
         </div>
     );
