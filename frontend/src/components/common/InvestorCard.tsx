@@ -29,15 +29,24 @@ interface InvestorProps {
 
 const InvestorCard: React.FC<InvestorProps> = ({ investor }) => {
 
+    const processed = (preference: any): string => {
+        let industries = preference ? preference.split(',') : [];
+        let preferences = industries.map((industry: string) => industry.trim()).join(', ');
+        if (preferences.length > 100) {
+            return preferences.substring(0, 100) + '...';
+        }
+        return preferences;
+    }
+
     return (
         <div className='rounded border-[0.5px] border-gray-600 p-4 flex flex-col bg-gray-900'>
             <div className='flex gap-5'>
                 {investor.Image && <img src={investor.Image} alt={`${investor.Name} photo`} className='w-40 h-40 rounded ' />}
-                <div className='flex flex-col gap-y-4'>
+                <div className='flex flex-col gap-y-4 w-2/5'>
                     <div className='text-xl font-bold'>{investor.Name}</div>
                     <div className='flex gap-x-1 text-green-400 max-w-fit bg-green-950 font-medium px-2 border-[1.5px] rounded-[10px] border-green-400'>
                         <DollarSign size={15} className='mt-1' />
-                        {investor.TypeOfFund}
+                        {investor.TypeOfFund?.substring(0, 100)}
                     </div>
                     <div className='flex gap-x-3'>
                         <a href={`${investor.FB}`} title="facebook link" target='_blank' rel='noreferrer'><Facebook /></a>
@@ -51,7 +60,7 @@ const InvestorCard: React.FC<InvestorProps> = ({ investor }) => {
                                 <ChevronDown />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-72">
+                        <DropdownMenuContent className="max-w-fit">
                             <DropdownMenuGroup>
                                 {investor.PhoneNumber &&
                                     <div onClick={() => { navigator.clipboard.writeText(investor.PhoneNumber) }}>
@@ -66,7 +75,7 @@ const InvestorCard: React.FC<InvestorProps> = ({ investor }) => {
                                         <DropdownMenuItem>
                                             <Mail className='mr-2' />
                                             <span>{investor.EmailAddress}</span>
-                                            <DropdownMenuShortcut><CopyCheck /></DropdownMenuShortcut>
+                                            <DropdownMenuShortcut><CopyCheck className='ml-2' /></DropdownMenuShortcut>
                                         </DropdownMenuItem>
                                     </a>}
                                 {investor.Websites &&
@@ -80,7 +89,21 @@ const InvestorCard: React.FC<InvestorProps> = ({ investor }) => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
+                <div className='border-[0.1px] my-3 border-gray-500'></div>
+                <div className='flex flex-col justify-center gap-y-[1px]'>
+                    {investor.Company && <><div className='text-gray-500 font-semibold text-sm'>Company</div><div className='text-gray-400 font-medium'>{investor.Company}</div></>}
+                    {investor.City && <><div className='text-gray-500 font-semibold text-sm'>City</div><div className='text-gray-400 font-medium'>{investor.City}</div></>}
+                    {investor.Country && <><div className='text-gray-500 font-semibold text-sm'>Country</div><div className='text-gray-400 font-medium'>{investor.Country}</div></>}
+                </div>
             </div>
+            <div className='border-[0.1px] border-gray-500 mt-4 w-10/12'></div>
+            {investor.IndustryPreferences &&
+                <><div className='text-gray-500 font-semibold my-3'>Investment Areas</div>
+                    <div className='text-gray-400 font-medium w-10/12'>{processed(investor.IndustryPreferences)}</div>
+                </>}
+            {investor.PastIndustryPreferences &&
+                <><div className='text-gray-500 font-semibold my-3'>Past Investment</div>
+                    <div className='text-gray-400 font-medium w-10/12'>{processed(investor.PastIndustryPreferences)}</div></>}
         </div>
     )
 }
