@@ -4,7 +4,6 @@ import { CreateNewList } from '../common/CreateNewList';
 import { InvestorSelect } from '../../data/InvestorSelect';
 import { Input } from '../ui/input';
 import { ScrollArea } from '../ui/scroll-area';
-import { Checkbox } from '../ui/checkbox';
 import {
     Select,
     SelectContent,
