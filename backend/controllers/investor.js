@@ -12,7 +12,7 @@ const getInvestorDetails = async (req, res) => {
         console.log('limit:', limitValue, 'skip:', skipValue);
 
         // Handle search terms
-        const { city, typeOfFund, company, stagePreferences, industryPreferences, country, searchTerm, email, phone, website } = req.query;
+        const { city, typeOfFund, company, jobTitle, stagePreferences, industryPreferences, country, searchTerm, dataAvailable } = req.query;
         
         if (city) query.City = { $regex: new RegExp(city.split(',').join('|'), 'i')};
         if (typeOfFund) query.TypeOfFund = { $regex: new RegExp(typeOfFund.split(',').join('|'), 'i')};
@@ -20,6 +20,7 @@ const getInvestorDetails = async (req, res) => {
         if (stagePreferences) query.StagePreferences = { $regex: new RegExp(stagePreferences.split(',').join('|'), 'i')};
         if (industryPreferences) query.IndustryPreferences = { $regex: new RegExp(industryPreferences.split(',').join('|'), 'i')};
         if (country) query.Country = { $regex: new RegExp(country.split(',').join('|'), 'i')};
+        if (jobTitle) query.Role = { $regex: new RegExp(jobTitle.split(',').join('|'), 'i')};
 
 
         // Handle general search term
@@ -41,9 +42,16 @@ const getInvestorDetails = async (req, res) => {
             ];
         }
 
-        if(email == 'true') query.EmailAddress = { $ne: null };
-        if(phone == 'true') query.PhoneNumber = { $ne: null };
-        if(website == 'true') query.Websites = { $ne: null };
+        if(dataAvailable){
+            const data = dataAvailable.split(',');
+            const email = data.includes("Email Available");
+            const phone = data.includes("Phone Available");
+            const website = data.includes("Website Available");
+
+            if(email == true) query.EmailAddress = { $ne: null };
+            if(phone == true) query.PhoneNumber = { $ne: null };
+            if(website == true) query.Websites = { $ne: null };
+        }
 
         // Count total number of items
         const totalCount = await Investor.countDocuments(query);

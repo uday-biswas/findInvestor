@@ -4,7 +4,7 @@ import { CreateNewList } from '../common/CreateNewList';
 import { InvestorSelect } from '../../data/InvestorSelect';
 import { Input } from '../ui/input';
 import { ScrollArea } from '../ui/scroll-area';
-
+import BounceLoader from "react-spinners/BounceLoader";
 import {
     Select,
     SelectContent,
@@ -24,6 +24,8 @@ type Filters = {
     typeOfFund: any;
     industryPreferences: any;
     stagePreferences: any;
+    jobTitle: any;
+    dataAvailable: any;
     searchTerm: any;
     [key: string]: any;
 }
@@ -36,14 +38,19 @@ const Investor: React.FC = () => {
         typeOfFund: [],
         industryPreferences: [],
         stagePreferences: [],
+        jobTitle: [],
+        dataAvailable: [],
         searchTerm: ''
     });
     const [limit, setLimit] = useState(25);
     const [skip, setSkip] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
+    const [totalPages, setTotalPages] = useState(10);
+    const [loading, setLoading] = useState(false);
 
     const fetchInvestors = async () => {
+        setLoading(true);
         try {
             const filterParams = Object.entries(filters).map(([key, value]) => {
                 if (Array.isArray(value) && value.length > 0) {
@@ -61,14 +68,25 @@ const Investor: React.FC = () => {
             // console.log("result:", JSON.stringify(result.data));
             setInvestors(result?.data.data);
             setTotalItems(result?.data.total);
+            setLoading(false);
         } catch (err) {
             console.log(`error while fetching subLinks : - > ${err}`);
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         fetchInvestors();
     }, [filters, limit, skip]);
+
+    const handlePages = () => {
+        const pages = Math.ceil(totalItems / limit);
+        setTotalPages(pages);
+    }
+
+    useEffect(() => {
+        handlePages();
+    }, [totalItems, limit]);
 
     const handleCheckboxChange = (category: keyof Filters, value: string) => {
         console.log("category: ", category);
@@ -176,6 +194,18 @@ const Investor: React.FC = () => {
                         </div>
                     </div>
                     <div className='text-sm text-green-100 pl-4 pt-2'>showing {totalItems} items</div>
+                    {/* loading indicator while fetching data */}
+                    {loading && (
+                        <div className="flex justify-center items-center mt-4">
+                            <BounceLoader
+                                color={"blue"}
+                                loading={loading}
+                                size={100}
+                                aria-label="Loading Spinner"
+                                data-testid="loader"
+                            />
+                        </div>
+                    )}
                     <div className='flex flex-col gap-y-6 pt-4'>
                         {
                             investors?.map((investor: any, i: number) => (
@@ -215,7 +245,7 @@ const Investor: React.FC = () => {
                                 <PaginationItem>
                                     <PaginationNext onClick={() => handlePageChange(currentPage + 1)}
                                         className={
-                                            currentPage === 7 ? "pointer-events-none opacity-50" : undefined
+                                            currentPage >= totalPages ? "pointer-events-none opacity-50" : undefined
                                         } />
                                 </PaginationItem>
                             </PaginationContent>

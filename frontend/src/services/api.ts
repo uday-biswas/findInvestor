@@ -12,5 +12,11 @@ export const endpoints = {
     RESETPASSWORD_API: BASE_URL + "/auth/reset-password",
 
     INVESTOR_API: BASE_URL + "/investor/getInvestorDetails",
-    PITCHDECK_API: BASE_URL + "/pitchdeck/getpitchdeckdetails"
+    PITCHDECK_API: BASE_URL + "/pitchdeck/getpitchdeckdetails",
+
+    GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
+
+    COURSE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
+    COURSE_VERIFY_API: BASE_URL + "/payment/verifyPayment",
+    SEND_PAYMENT_SUCCESS_EMAIL_API: BASE_URL + "/payment/sendPaymentSuccessEmail",
 };

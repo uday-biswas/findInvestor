@@ -1,14 +1,5 @@
-//before return statement
-//firstly take the token , user details and total items from redux store
-//then fetch the sublinks from the api and create a function to check the route to make the navbar links active
-//for return statement
-//put the logo, then map through the navbar links array {home, catalog, about, contact} and put the links inside li tag.
-//if the title is catalog then put the sublinks inside the div tag and map through the sublinks array and
-// put the links inside li tag which will be shown on hover.
-//then put the login & signup button if token is null else put the cart with totalItems and profile dropdown button.
-
 import { useState } from "react";
-import { Link, useLocation, matchPath } from "react-router-dom";
+import { Link, useLocation, matchPath, useNavigate } from "react-router-dom";
 import { NavbarLinks } from "../../data/navbar-links";
 import {
     DropdownMenu,
@@ -20,18 +11,17 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
-
+import { logout } from "../../services/operation/authAPI";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { User, CreditCard, LogOut } from "lucide-react";
 import { FaRegStar } from "react-icons/fa6";
 import Profile from "./Profile";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/index";
+
 const Navbar = () => {
-    //   const { token } = useSelector((store) => store.auth);
-    //   const { user } = useSelector((store) => store.profile);
-    //   const { totalItems } = useSelector((store) => store.cart);
-    const token = "token";
-    // const plan = "free";
+    const { token } = useSelector((store: RootState) => store.auth);
+    const { user } = useSelector((store: RootState) => store.profile);
 
     // const [navVisible, setNavVisible] = useState(false);
     const [detailsModal, setDetailsModal] = useState(false);
@@ -40,13 +30,13 @@ const Navbar = () => {
     const matchRoute = (route: any) => {
         return matchPath({ path: route }, location.pathname);
     };
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     // const toggleNav = () => {
     //     setNavVisible(!navVisible);
     // };
-
-    const logout = () => {
-        console.log("logout");
-    }
 
     return (
         <>
@@ -87,12 +77,12 @@ const Navbar = () => {
                         {token === null && (
                             <>
                                 <Link to="/login">
-                                    <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
+                                    <button className="rounded-[8px] border border-gray-700 bg-gray-800 px-[12px] py-[8px] text-gray-300">
                                         Log in
                                     </button>
                                 </Link>
                                 <Link to="/signup">
-                                    <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
+                                    <button className="rounded-[8px] border border-gray-700 bg-gray-800 px-[12px] py-[8px] text-gray-300">
                                         Sign up
                                     </button>
                                 </Link>
@@ -132,7 +122,7 @@ const Navbar = () => {
                                             </Link>
                                         </DropdownMenuGroup>
                                         <DropdownMenuSeparator />
-                                        <div onClick={logout}>
+                                        <div onClick={() => logout(navigate, dispatch)}>
                                             <DropdownMenuItem>
                                                 <LogOut className="mr-2 h-4 w-4" />
                                                 <span>Log out</span>
@@ -141,7 +131,7 @@ const Navbar = () => {
                                         </div>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
-                                <Profile detailsModal={detailsModal} setDetailsModal={setDetailsModal} />
+                                <Profile detailsModal={detailsModal} setDetailsModal={setDetailsModal} user={user} />
                             </div>
                         )}
                     </div>
