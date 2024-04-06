@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema({
                 required: true,
                 trim: true
         },
+        investorLists: [{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "List",
+                required: true
+        }],
         additionalDetails: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Profile",

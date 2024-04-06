@@ -13,12 +13,13 @@ import { Label } from "@/components/ui/label"
 interface ProfileProps {
     detailsModal: boolean;
     setDetailsModal: (value: boolean) => void;
+    user: any;
 }
 
-const Profile: React.FC<ProfileProps> = ({ detailsModal, setDetailsModal }) => {
+const Profile: React.FC<ProfileProps> = ({ detailsModal, setDetailsModal, user }) => {
 
     const saveProfile = () => {
-        console.log("Profile saved!")
+        console.log(user.gender, "Profile saved!")
         setDetailsModal(false)
     }
 
