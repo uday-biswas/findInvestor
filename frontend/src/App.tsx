@@ -8,8 +8,22 @@ import UpdatePassword from './components/pages/UpdatePassword'
 import VerifyEmail from './components/pages/VerifyEmail'
 import ForgotPassword from './components/pages/ForgotPassword'
 import Error from './components/pages/Error'
+import Lists from './components/pages/Lists'
+import List from './components/pages/List'
+import Pitchdecks from './components/pages/Pitchdecks'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from './redux/index'
+import { useEffect } from 'react'
+import { getListDetails } from './services/operation/listAPI'
 
 function App(): React.ReactElement {
+
+  const email = useSelector((state: RootState) => state.profile.user ? state.profile.user.email : null);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getListDetails(email, dispatch);
+  }, []);
 
   return (
     <div
@@ -19,6 +33,12 @@ function App(): React.ReactElement {
 
       <Routes>
         <Route path="/" element={<Investor />}></Route>
+
+        <Route path="/lists" element={<Lists />}></Route>
+
+        <Route path="/lists/:id" element={<List />}></Route>
+
+        <Route path="/pitchdecks" element={<Pitchdecks />}></Route>
 
         <Route path="/login" element={<Login />} />
 

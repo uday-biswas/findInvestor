@@ -19,4 +19,11 @@ export const endpoints = {
     COURSE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
     COURSE_VERIFY_API: BASE_URL + "/payment/verifyPayment",
     SEND_PAYMENT_SUCCESS_EMAIL_API: BASE_URL + "/payment/sendPaymentSuccessEmail",
+
+    CREATE_LIST_API: BASE_URL + "/list/createList",
+    GET_LIST_DETAILS_API: BASE_URL + "/list/getListDetails",
+    DELETE_LIST_API: BASE_URL + "/list/deleteList",
+    ADD_PAGE_TO_LIST_API: BASE_URL + "/list/addPageToList",
+    ADD_INVESTOR_TO_LIST_API: BASE_URL + "/list/addInvestorToList",
+    REMOVE_INVESTOR_FROM_LIST_API: BASE_URL + "/list/removeInvestorFromList",
 };

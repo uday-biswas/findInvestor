@@ -8,7 +8,6 @@ const {
     deleteList,
     addInvestorToList,
     removeInvestorFromList,
-    addPageToList,
 } = require("../controllers/list")
 
 
@@ -20,7 +19,6 @@ const {
 router.get("/getListDetails", getListDetails)
 router.post("/createList", createList)
 router.delete("/deleteList", deleteList)
-router.put("/addPageToList", addPageToList)
 router.post("/addInvestorToList", addInvestorToList)    
 router.put("/removeInvestorFromList", removeInvestorFromList)
 

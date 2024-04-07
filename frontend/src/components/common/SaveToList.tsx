@@ -10,12 +10,13 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { SaveAll } from "lucide-react"
 
 export function SaveToList() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" className='rounded bg-black text-white font-semibold border border-gray-400 hover:bg-black hover:text-gray-300'>Save Results to List</Button>
+                <Button variant="outline" className='rounded'>Save Results to List <SaveAll className="inline-block size-5 ml-2" /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

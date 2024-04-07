@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema({
                 required: true,
                 trim: true
         },
+        membership: {
+                type: String,
+                default: 'free',
+                enum : ['free', 'silver', 'gold'],
+                required: true
+        },
         investorLists: [{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "List",

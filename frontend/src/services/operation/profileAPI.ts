@@ -10,13 +10,6 @@ const {
     GET_USER_DETAILS_API,
 } = endpoints;
 
-//function to get user details
-//it takes token and navigate as parameter
-//its returning a async function which takes dispatch as parameter
-//its using apiConnector function to make to create a instance of axios to send the get request to the GET_USER_DETAILS_API
-//if the response is not success then it will throw a error
-//if the response is success then it will dispatch the setUser action with the response data
-//if there is any error then it will dispatch the logout action.
 export async function getUserDetails(token: any, navigate: NavigateFunction, dispatch: Dispatch) {
     const toastId = toast.loading("Loading...");
     dispatch(setLoading(true));

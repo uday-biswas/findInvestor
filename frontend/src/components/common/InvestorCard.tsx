@@ -2,6 +2,7 @@ import { Copy, DollarSign, Facebook, Linkedin, Twitter, ChevronDown, Phone, Mail
 import React from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuShortcut, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
+import AddToList from "./AddToList"
 
 interface InvestorData {
     Image: string;
@@ -90,20 +91,26 @@ const InvestorCard: React.FC<InvestorProps> = ({ investor }) => {
                     </DropdownMenu>
                 </div>
                 <div className='border-[0.1px] my-3 border-gray-500'></div>
-                <div className='flex flex-col justify-center gap-y-[1px]'>
+                <div className='flex flex-col justify-center gap-y-[3px]'>
                     {investor.Company && <><div className='text-gray-500 font-semibold text-sm'>Company</div><div className='text-gray-400 font-medium'>{investor.Company}</div></>}
                     {investor.City && <><div className='text-gray-500 font-semibold text-sm'>City</div><div className='text-gray-400 font-medium'>{investor.City}</div></>}
                     {investor.Country && <><div className='text-gray-500 font-semibold text-sm'>Country</div><div className='text-gray-400 font-medium'>{investor.Country}</div></>}
                 </div>
             </div>
-            <div className='border-[0.1px] border-gray-500 mt-4 w-10/12'></div>
-            {investor.IndustryPreferences &&
-                <><div className='text-gray-500 font-semibold my-3'>Investment Areas</div>
-                    <div className='text-gray-400 font-medium w-10/12'>{processed(investor.IndustryPreferences)}</div>
-                </>}
-            {investor.PastIndustryPreferences &&
-                <><div className='text-gray-500 font-semibold my-3'>Past Investment</div>
-                    <div className='text-gray-400 font-medium w-10/12'>{processed(investor.PastIndustryPreferences)}</div></>}
+            <div className='border-[0.1px] border-gray-500 mt-4 w-full'></div>
+            <div className='flex justify-between relative '>
+                <div>
+                    {investor.IndustryPreferences &&
+                        <><div className='text-gray-500 font-semibold my-3'>Investment Areas</div>
+                            <div className='text-gray-400 font-medium w-10/12'>{processed(investor.IndustryPreferences)}</div>
+                        </>}
+                    {investor.PastIndustryPreferences &&
+                        <><div className='text-gray-500 font-semibold my-3'>Past Investment</div>
+                            <div className='text-gray-400 font-medium w-10/12'>{processed(investor.PastIndustryPreferences)}</div>
+                        </>}
+                </div>
+                <AddToList ids={[investor._id]} page={false} />
+            </div>
         </div>
     )
 }

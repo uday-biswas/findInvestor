@@ -17,6 +17,9 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { apiConnector } from '@/services/apiConnector';
 import { endpoints } from '@/services/api';
 import InvestorCard from '../common/InvestorCard';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/index';
+import AddToList from '../common/AddToList';
 
 type Filters = {
     city: any;
@@ -48,6 +51,7 @@ const Investor: React.FC = () => {
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(10);
     const [loading, setLoading] = useState(false);
+    const email = useSelector((state: RootState) => state.profile.user ? state.profile.user.email : null);
 
     const fetchInvestors = async () => {
         setLoading(true);
@@ -61,16 +65,15 @@ const Investor: React.FC = () => {
                 return '';
             }).filter(param => param !== '').join('&');
 
-            const url = endpoints.INVESTOR_API + `?limit=${limit}&skip=${skip}` + (filterParams ? `&${filterParams}` : '');
+            const url = endpoints.INVESTOR_API + `?limit=${limit}&skip=${skip}&email=${email}` + (filterParams ? `&${filterParams}` : '');
 
             console.log("url: ", url);
             const result = await apiConnector("GET", url);
-            // console.log("result:", JSON.stringify(result.data));
             setInvestors(result?.data.data);
             setTotalItems(result?.data.total);
             setLoading(false);
         } catch (err) {
-            console.log(`error while fetching subLinks : - > ${err}`);
+            console.log(`error while fetching investors : - > ${err}`);
             setLoading(false);
         }
     };
@@ -126,6 +129,10 @@ const Investor: React.FC = () => {
         setCurrentPage(page);
     };
 
+    const convertToId = (data: any) => {
+        return data.map((item: any) => item._id);
+    }
+
     return (
         <div className='flex flex-col w-11/12 mx-auto'>
             <div className='flex justify-between mt-8'>
@@ -133,12 +140,12 @@ const Investor: React.FC = () => {
                     Search Investors
                 </div>
                 <div className='flex gap-3'>
-                    <SaveToList />
+                    <AddToList ids={convertToId(investors)} page={true} />
                     <CreateNewList />
                 </div>
             </div>
             <div className='flex '>
-                <ScrollArea className='w-1/4 border-r-[0.5px] pb-5 h-[492px]'>
+                <ScrollArea className='w-1/4 border-r-[0.5px] pb-5 h-[calc(100vh-8rem)]'>
                     <div className='text-gray-400 font-semibold mb-5'>Filter By:</div>
                     <div>
                         {InvestorSelect?.map((category, i) => (
@@ -167,7 +174,7 @@ const Investor: React.FC = () => {
                         ))}
                     </div>
                 </ScrollArea>
-                <ScrollArea className='flex flex-col w-10/12 pt-5 pl-10 h-[452px]'>
+                <ScrollArea className='flex flex-col w-10/12 py-5 pl-10 h-[calc(100vh-8rem)]'>
                     <div className='flex justify-between'>
                         <Input
                             placeholder='Search by Name, Country, Industry, Fund Type'

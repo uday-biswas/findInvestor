@@ -21,7 +21,8 @@ import { RootState } from "../../redux/index";
 
 const Navbar = () => {
     const { token } = useSelector((store: RootState) => store.auth);
-    const { user } = useSelector((store: RootState) => store.profile);
+    const user = useSelector((store: RootState) => store.profile.user ? store.profile.user : null);
+    console.log("user", user);
 
     // const [navVisible, setNavVisible] = useState(false);
     const [detailsModal, setDetailsModal] = useState(false);
@@ -100,7 +101,7 @@ const Navbar = () => {
                                 <DropdownMenu>
                                     <DropdownMenuTrigger>
                                         <Avatar>
-                                            <AvatarImage src="https://github.com/shadcn.png" />
+                                            <AvatarImage src={user ? user.image : null} />
                                             <AvatarFallback>CN</AvatarFallback>
                                         </Avatar>
                                     </DropdownMenuTrigger>

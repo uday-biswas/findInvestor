@@ -1,12 +1,13 @@
 require("dotenv").config();
 const Investor = require("../models/investor");
+const User = require("../models/user");
 
 const getInvestorDetails = async (req, res) => {
     try {
         let query = {};
 
         // Check if limit and skip parameters are provided
-        const { limit, skip } = req.query;
+        const { limit, skip, email } = req.query;
         const limitValue = parseInt(limit) || 10;
         const skipValue = parseInt(skip) || 0;
         console.log('limit:', limitValue, 'skip:', skipValue);
@@ -54,9 +55,40 @@ const getInvestorDetails = async (req, res) => {
         }
 
         // Count total number of items
-        const totalCount = await Investor.countDocuments(query);
+        const memberCount = await Investor.countDocuments();
+        let memberSkip;
+        if(email !== "null"){
+        const user = await User.findOne({email});
+        if(user.membership == 'free'){
+            memberSkip = memberCount - 5000;
+        }
+        else if(user.membership == 'silver'){
+            memberSkip = memberCount - 30000;
+        }
+        else if(user.membership == 'gold'){
+            memberSkip = 0;
+        }}
+        else{
+            memberSkip = memberCount - 5000;
+        }
 
-        const investors = await Investor.find(query).limit(limitValue).skip(skipValue);
+        const pipeline1 = [
+            { $skip: memberSkip },
+            { $match: query },
+            { $count: "totalCount" }
+        ]
+
+        const pipeline2 = [
+            { $skip: memberSkip},
+            { $match: query },
+            { $skip: skipValue},
+            { $limit: limitValue },
+        ]
+
+        const result = await Investor.aggregate(pipeline1);
+        const totalCount = result.length > 0 ? result[0].totalCount : 0;
+
+        const investors = await Investor.aggregate(pipeline2);
         res.status(200).json({ total: totalCount, data: investors });
     } catch (error) {
         console.error('Error fetching investors:', error);

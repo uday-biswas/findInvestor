@@ -13,12 +13,6 @@ const {
   RESETPASSWORD_API,
 } = endpoints;
 
-//for sending otp to the email and navigating to the verify otp page
-//during the return statement
-//dispatch the loading state to true using the setLoading reducer
-//use the apiConnector function to create a axios instance and send the POST request to the SENDOTP_API
-//then if the response is successful, dispatch the loading state to false and navigate to the verify otp page
-//else throw an error
 const sendOtp = async (email: string, navigate: NavigateFunction, dispatch: Dispatch) => {
   const toastId = toast.loading("Loading...");
   try {
@@ -39,15 +33,6 @@ const sendOtp = async (email: string, navigate: NavigateFunction, dispatch: Disp
     toast.dismiss(toastId);
   }
 };
-
-
-//for signing up the user
-//during the return statement
-//get the accountType, firstName, lastName, email, password, confirmPassword, otp, navigate as parameters
-//dispatch the loading state to true using the setLoading reducer
-//use the apiConnector function to create a axios instance and send the POST request to the SIGNUP_API
-//then if the response is successful, dispatch the loading state to false and navigate to the login page
-//else throw an error
 
 const signUp = async (
   firstName: string,
@@ -117,6 +102,7 @@ const login = async (email: string, password: string, navigate: NavigateFunction
 
     dispatch(setToken(response.data.token));
     dispatch(setUser({ ...response.data.user, image: userImage }));
+    console.log("login user", response.data.user)
 
     navigate("/");
   } catch (error: any) {
