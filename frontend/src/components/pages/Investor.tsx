@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { SaveToList } from '@/components/common/SaveToList'
 import { CreateNewList } from '../common/CreateNewList';
 import { InvestorSelect } from '../../data/InvestorSelect';
 import { Input } from '../ui/input';

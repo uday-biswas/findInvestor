@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { CreateNewList } from '../common/CreateNewList';
 import { RootState } from '../../redux/index';
 import { Button } from '../ui/button';

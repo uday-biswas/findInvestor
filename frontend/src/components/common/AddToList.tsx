@@ -7,8 +7,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { RootState } from "../../redux/index"
 import { Plus, SaveAll } from "lucide-react"
 import { useDispatch, useSelector } from "react-redux"
