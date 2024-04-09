@@ -2,12 +2,13 @@ const express = require("express")
 const router = express.Router()
 
 
-const { 
+const {
     getListDetails,
     createList,
     deleteList,
     addInvestorToList,
     removeInvestorFromList,
+    updateList,
 } = require("../controllers/list")
 
 
@@ -19,7 +20,8 @@ const {
 router.get("/getListDetails", getListDetails)
 router.post("/createList", createList)
 router.delete("/deleteList", deleteList)
-router.post("/addInvestorToList", addInvestorToList)    
+router.post("/addInvestorToList", addInvestorToList)
 router.put("/removeInvestorFromList", removeInvestorFromList)
+router.put("/updateList", updateList)
 
 module.exports = router

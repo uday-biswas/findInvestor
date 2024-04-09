@@ -215,7 +215,7 @@ const Investor: React.FC = () => {
                     <div className='flex flex-col gap-y-6 pt-4'>
                         {
                             investors?.map((investor: any, i: number) => (
-                                <InvestorCard key={i} investor={investor} />
+                                <InvestorCard key={i} investor={investor} listId={null} />
                             ))
                         }
                         <Pagination>

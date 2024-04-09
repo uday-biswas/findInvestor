@@ -26,4 +26,5 @@ export const endpoints = {
     ADD_PAGE_TO_LIST_API: BASE_URL + "/list/addPageToList",
     ADD_INVESTOR_TO_LIST_API: BASE_URL + "/list/addInvestorToList",
     REMOVE_INVESTOR_FROM_LIST_API: BASE_URL + "/list/removeInvestorFromList",
+    UPDATE_LIST_API: BASE_URL + "/list/updateList",
 };

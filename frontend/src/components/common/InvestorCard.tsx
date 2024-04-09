@@ -1,8 +1,10 @@
-import { Copy, DollarSign, Facebook, Linkedin, Twitter, ChevronDown, Phone, Mail, CopyCheck, Globe } from 'lucide-react';
+import { Copy, DollarSign, Facebook, Linkedin, Twitter, ChevronDown, Phone, Mail, CopyCheck, Globe, Trash } from 'lucide-react';
 import React from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuShortcut, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
 import AddToList from "./AddToList"
+import { removeInvestorFromList } from '@/services/operation/listAPI';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface InvestorData {
     Image: string;
@@ -25,10 +27,13 @@ interface InvestorData {
 }
 
 interface InvestorProps {
-    investor: InvestorData
+    investor: InvestorData,
+    listId: string | null
 }
 
-const InvestorCard: React.FC<InvestorProps> = ({ investor }) => {
+const InvestorCard: React.FC<InvestorProps> = ({ investor, listId }) => {
+    const dispatch = useDispatch();
+    const email = useSelector((state: any) => state.profile.user.email);
 
     const processed = (preference: any): string => {
         let industries = preference ? preference.split(',') : [];
@@ -37,6 +42,10 @@ const InvestorCard: React.FC<InvestorProps> = ({ investor }) => {
             return preferences.substring(0, 100) + '...';
         }
         return preferences;
+    }
+
+    const handleDelete = (listId: string, investorId: string) => {
+        removeInvestorFromList(listId, investorId, email, dispatch)
     }
 
     return (
@@ -109,7 +118,14 @@ const InvestorCard: React.FC<InvestorProps> = ({ investor }) => {
                             <div className='text-gray-400 font-medium w-10/12'>{processed(investor.PastIndustryPreferences)}</div>
                         </>}
                 </div>
-                <AddToList ids={[investor._id]} page={false} />
+                {listId ?
+                    <Button variant="outline" onClick={() => handleDelete(listId, investor._id)} className='rounded-[5px] max-w-fit border-red-400 text-red-400 hover:text-red-500 hover:bg-black absolute bottom-2 right-2'>
+                        <span>Delete from list</span>
+                        <Trash className="ml-2 inline-block size-4" />
+                    </Button>
+                    :
+                    <AddToList ids={[investor._id]} page={false} />
+                }
             </div>
         </div>
     )

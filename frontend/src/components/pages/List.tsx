@@ -4,12 +4,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../redux/index";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import InvestorCard from "../common/InvestorCard";
+import DeleteList from "../common/DeleteList";
 
 const List = () => {
     const investorLists = useSelector((state: RootState) => state.list.investorLists);
     const { id } = useParams<{ id: string }>();
     const [lists, setLists] = useState([]);
     const [list, setList] = useState<any>(null);
+    const [deleteOpen, setDeleteOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,8 +39,20 @@ const List = () => {
                     <div className="text-gray-500 font-medium">{list.desc}</div>
                 </div>
                 <div className="flex">
-                    <Button className="mt-4 ml-4 rounded-[5px] font-semibold"><span>Edit list</span><PencilLine className="ml-2 inline-block size-4" /></Button>
-                    <Button variant="outline" className="mt-4 ml-4 rounded-[5px] text-red-400 border-red-400"><span>Delete list</span><Trash className="ml-2 inline-block size-4" /></Button>
+                    <Button className="mt-4 ml-4 rounded-[5px] font-semibold"><span>Edit details</span><PencilLine className="ml-2 inline-block size-4" /></Button>
+                    <DeleteList id={list._id} deleteOpen={deleteOpen} setDeleteOpen={setDeleteOpen} />
+                    <Button variant="outline" onClick={() => setDeleteOpen(true)} className="mt-4 ml-4 rounded-[5px] text-red-400 
+                border-red-400 hover:text-red-500 hover:bg-black">
+                        <span>Delete list</span>
+                        <Trash className="ml-2 inline-block size-4" />
+                    </Button>
+                </div>
+            </div>
+            <div>
+                <div className="flex flex-col gap-6 my-4">
+                    {list.investors.map((investor: any, i: any) => (
+                        <InvestorCard key={i} investor={investor} listId={list._id} />
+                    ))}
                 </div>
             </div>
         </div>

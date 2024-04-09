@@ -9,6 +9,7 @@ const {
     DELETE_LIST_API,
     ADD_INVESTOR_TO_LIST_API,
     REMOVE_INVESTOR_FROM_LIST_API,
+    UPDATE_LIST_API,
 } = endpoints;
 
 const createList = async (name: string, description: string, email: string, dispatch: Dispatch) => {
@@ -49,14 +50,16 @@ const getListDetails = async (email: string, dispatch: Dispatch) => {
     toast.dismiss(toastId);
 }
 
-const deleteList = async (id: string) => {
+const deleteList = async (id: string, email: string, dispatch: Dispatch, navigate: any) => {
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("DELETE", DELETE_LIST_API, { id });
+        const response = await apiConnector("DELETE", DELETE_LIST_API, { listId: id, email });
         if (!response.data.success) {
             throw new Error(response.data.message);
         }
+        dispatch(setInvestorLists(response.data.lists));
         toast.success("List deleted successfully");
+        navigate("/lists");
     } catch (error: any) {
         const errorResponse = error?.response?.data?.message;
         toast.error(errorResponse);
@@ -81,14 +84,15 @@ const addInvestorToList = async (listIds: string[], investorIds: string[], email
     toast.dismiss(toastId);
 }
 
-const removeInvestorFromList = async (listId: string, investorId: string) => {
+const removeInvestorFromList = async (listId: string, investorId: string, email: string, dispatch: Dispatch) => {
     const toastId = toast.loading("Loading...");
     try {
-        const response = await apiConnector("DELETE", REMOVE_INVESTOR_FROM_LIST_API, { listId, investorId });
+        const response = await apiConnector("PUT", REMOVE_INVESTOR_FROM_LIST_API, { email, listId, investorId });
         if (!response.data.success) {
             throw new Error(response.data.message);
         }
         toast.success("Investor removed from list successfully");
+        dispatch(setInvestorLists(response.data.lists));
     } catch (error: any) {
         const errorResponse = error?.response?.data?.message;
         toast.error(errorResponse);
@@ -96,4 +100,20 @@ const removeInvestorFromList = async (listId: string, investorId: string) => {
     toast.dismiss(toastId);
 }
 
-export { createList, getListDetails, deleteList, addInvestorToList, removeInvestorFromList };
+const updateList = async (name: string, description: string, email: string, id: string, dispatch: Dispatch) => {
+    const toastId = toast.loading("Loading...");
+    try {
+        const response = await apiConnector("PUT", UPDATE_LIST_API, { name, description, email, id });
+        if (!response.data.success) {
+            throw new Error(response.data.message);
+        }
+        toast.success("List updated successfully");
+        dispatch(setInvestorLists(response.data.lists));
+    } catch (error: any) {
+        const errorResponse = error?.response?.data?.message;
+        toast.error(errorResponse);
+    }
+    toast.dismiss(toastId);
+}
+
+export { createList, getListDetails, deleteList, addInvestorToList, removeInvestorFromList, updateList };
