@@ -1,14 +1,14 @@
 export const NavbarLinks = [
     {
         title: "Investor",
-        path: "/",
+        path: "/dashboard/investors",
     },
     {
         title: "Saved Lists",
-        path: '/lists',
+        path: '/dashboard/lists',
     },
     {
         title: "PitchDecks",
-        path: "/pitchdecks",
+        path: "/dashboard/pitchdecks",
     },
 ];

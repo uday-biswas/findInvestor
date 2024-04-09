@@ -92,12 +92,26 @@ const Navbar = () => {
 
                         {token !== null && (
                             <div className="flex gap-3">
-                                <Link to="/upgrade">
-                                    <button className="rounded-[8px] font-semibold border bg-emerald-400 text-black px-[12px] py-[8px] ">
-                                        <FaRegStar className="inline-block mr-1" />
-                                        Upgrade Now
-                                    </button>
-                                </Link>
+                                {
+                                    user.membership === "gold" ? (
+                                        <button className="rounded-[8px] font-semibold border bg-yellow-400 text-black py-1 px-2">
+                                            <FaRegStar className="inline-block mr-1" />
+                                            Gold
+                                        </button>
+                                    ) : user.membership === "silver" ? (
+                                        <button className="rounded-[8px] font-semibold border text-white bg-green-700 py-1 px-2">
+                                            <FaRegStar className="inline-block mr-1" />
+                                            Silver
+                                        </button>
+                                    ) : (
+                                        <Link to="/upgrade">
+                                            <button className="rounded-[8px] font-semibold border bg-emerald-400 text-black py-1 px-2">
+                                                <FaRegStar className="inline-block mr-1" />
+                                                Upgrade Now
+                                            </button>
+                                        </Link>
+                                    )
+                                }
                                 <DropdownMenu>
                                     <DropdownMenuTrigger>
                                         <Avatar>
@@ -105,8 +119,13 @@ const Navbar = () => {
                                             <AvatarFallback>CN</AvatarFallback>
                                         </Avatar>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="w-48">
-                                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                    <DropdownMenuContent className="w-48 mr-2">
+                                        <DropdownMenuLabel>
+                                            <div className="flex flex-col gap-2">
+                                                <div>{user ? `${user.firstName} ${user.lastName}` : null}</div>
+                                                <div className="text-xs text-gray-400">{user ? user.email : null}</div>
+                                            </div>
+                                        </DropdownMenuLabel>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuGroup>
                                             <DropdownMenuItem onClick={() => setDetailsModal(true)}>

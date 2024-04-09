@@ -16,9 +16,10 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { apiConnector } from '@/services/apiConnector';
 import { endpoints } from '@/services/api';
 import InvestorCard from '../common/InvestorCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/index';
 import AddToList from '../common/AddToList';
+import { getListDetails } from '@/services/operation/listAPI';
 
 type Filters = {
     city: any;
@@ -51,6 +52,11 @@ const Investor: React.FC = () => {
     const [totalPages, setTotalPages] = useState(10);
     const [loading, setLoading] = useState(false);
     const email = useSelector((state: RootState) => state.profile.user ? state.profile.user.email : null);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        getListDetails(email, dispatch);
+    }, []);
 
     const fetchInvestors = async () => {
         setLoading(true);

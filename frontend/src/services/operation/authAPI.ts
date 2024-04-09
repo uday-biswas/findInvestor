@@ -97,14 +97,15 @@ const login = async (email: string, password: string, navigate: NavigateFunction
       ? response.data.user.image
       : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`;
 
+    const updatedUser = { ...response.data.user, image: userImage };
     localStorage.setItem("token", JSON.stringify(response.data.token));
-    localStorage.setItem("user", JSON.stringify(response.data.user));
+    localStorage.setItem("user", JSON.stringify(updatedUser));
 
     dispatch(setToken(response.data.token));
-    dispatch(setUser({ ...response.data.user, image: userImage }));
+    dispatch(setUser(updatedUser));
     console.log("login user", response.data.user)
 
-    navigate("/");
+    navigate("/dashboard/investors");
   } catch (error: any) {
     // console.log("LOGIN API ERROR............", error);
     toast.error("Login Failed");
