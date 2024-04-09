@@ -15,6 +15,7 @@ export const endpoints = {
     PITCHDECK_API: BASE_URL + "/pitchdeck/getpitchdeckdetails",
 
     GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
+    UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
 
     COURSE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
     COURSE_VERIFY_API: BASE_URL + "/payment/verifyPayment",

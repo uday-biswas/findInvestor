@@ -1,9 +1,9 @@
 const express = require("express")
 const router = express.Router()
-const { auth} = require("../middleware/auth")
+const { auth } = require("../middleware/auth")
 
 
-const { 
+const {
     updateProfile,
     deleteAccount,
     getAllUserDetails
@@ -17,7 +17,7 @@ const {
 // routes for getting all the user information for particular user
 router.get("/getUserDetails", auth, getAllUserDetails)
 // routes of update the profile
-router.put("/updateProfile", auth, updateProfile)
+router.put("/updateProfile", updateProfile)
 // routes for delete the account
 router.delete("/deleteAccount", auth, deleteAccount)
 

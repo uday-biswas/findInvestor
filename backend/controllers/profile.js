@@ -6,21 +6,11 @@ require("dotenv").config();
 const updateProfile = async (req, res) => {
   try {
     // fetch data
-    const { gender, dateOfBirth = "", about = "", contactNumber } = req.body;
-    // const { userId } = req.user.id
-    const userId = req.user.id;
-    console.log(`userId: - > ${userId}`);
-    // validate
-    if (!gender || !dateOfBirth || !about || !contactNumber) {
-      return res.status(403).json({
-        success: false,
-        message: "please fill all the fields",
-      });
-    }
+    const { gender = "", dob: dateOfBirth = "", about = "", contact: contactNumber = "",
+      email } = req.body;
 
     // update profile
-    // const profileId = userId.additionalDetails
-    const userDetails = await User.findById(userId);
+    const userDetails = await User.findOne({ email });
     console.log(`UserDETAIL : - > ${userDetails}`);
 
     const profileId = userDetails.additionalDetails || null; // Set to null if additionalDetails is missing
@@ -43,7 +33,7 @@ const updateProfile = async (req, res) => {
       },
       { new: true }
     );
-    const updatedUser = await User.findById(userId).populate(
+    const updatedUser = await User.findOne({ email }).populate(
       "additionalDetails"
     );
 

@@ -151,7 +151,7 @@ const Navbar = () => {
                                         </div>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
-                                <Profile detailsModal={detailsModal} setDetailsModal={setDetailsModal} user={user} />
+                                <Profile detailsModal={detailsModal} setDetailsModal={setDetailsModal} />
                             </div>
                         )}
                     </div>

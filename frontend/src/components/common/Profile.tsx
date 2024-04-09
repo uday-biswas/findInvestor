@@ -9,17 +9,34 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { RootState } from "@/redux";
+import { updateProfile } from "@/services/operation/profileAPI";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 interface ProfileProps {
     detailsModal: boolean;
     setDetailsModal: (value: boolean) => void;
-    user: any;
 }
 
-const Profile: React.FC<ProfileProps> = ({ detailsModal, setDetailsModal, user }) => {
+const Profile: React.FC<ProfileProps> = ({ detailsModal, setDetailsModal }) => {
+    const user = useSelector((store: RootState) => store.profile.user ? store.profile.user : null);
+
+    const [gender, setGender] = useState("");
+    const [about, setAbout] = useState("");
+    const [dob, setDob] = useState("");
+    const [contact, setContact] = useState("");
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        setGender(user.additionalDetails.gender);
+        setAbout(user.additionalDetails.about);
+        setDob(user.additionalDetails.dataOfBirth);
+        setContact(user.additionalDetails.contactNumber);
+    }, [user]);
 
     const saveProfile = () => {
-        console.log(user.gender, "Profile saved!")
+        updateProfile(gender, about, dob, contact, user.email, dispatch);
         setDetailsModal(false)
     }
 
@@ -32,25 +49,53 @@ const Profile: React.FC<ProfileProps> = ({ detailsModal, setDetailsModal, user }
                         Make changes to your profile here. Click save when you're done.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                            Name
+                <div className="flex flex-col gap-4 py-4">
+                    <div className="flex flex-col gap-3">
+                        <Label htmlFor="gender">
+                            Gender
                         </Label>
                         <Input
-                            id="name"
-                            defaultValue="Pedro Duarte"
-                            className="col-span-3"
+                            id="gender"
+                            defaultValue={user.additionalDetails.gender ? user.additionalDetails.gender : ""}
+                            className="col-span-3 rounded-[5px]"
+                            value={gender}
+                            onChange={(e) => setGender(e.target.value)}
                         />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="username" className="text-right">
-                            Username
+                    <div className="flex flex-col gap-3">
+                        <Label htmlFor="contact">
+                            Contact Number
                         </Label>
                         <Input
-                            id="username"
-                            defaultValue="@peduarte"
-                            className="col-span-3"
+                            id="contact"
+                            defaultValue={user.additionalDetails.contact ? user.additionalDetails.contact : ""}
+                            className="col-span-3 rounded-[5px]"
+                            value={contact}
+                            onChange={(e) => setContact(e.target.value)}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <Label htmlFor="dob">
+                            Date Of Birth
+                        </Label>
+                        <Input
+                            id="dob"
+                            defaultValue={user.additionalDetails.dateOfBirth ? user.additionalDetails.dateOfBirth : ""}
+                            className="col-span-3 rounded-[5px]"
+                            value={dob}
+                            onChange={(e) => setDob(e.target.value)}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <Label htmlFor="about">
+                            About
+                        </Label>
+                        <Input
+                            id="about"
+                            defaultValue={user.additionalDetails.about ? user.additionalDetails.about : ""}
+                            className="col-span-3 rounded-[5px]"
+                            value={about}
+                            onChange={(e) => setAbout(e.target.value)}
                         />
                     </div>
                 </div>
