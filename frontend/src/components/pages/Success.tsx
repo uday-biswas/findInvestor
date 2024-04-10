@@ -7,8 +7,6 @@ import { useLocation } from 'react-router-dom';
 const Success: React.FC = () => {
     const email = useSelector((state: RootState) => state.profile.user?.email);
     const dispatch = useDispatch();
-    // const { session_id } = useParams();
-    // const sessionId = session_id ? session_id : "free";
     const location = useLocation();
     const session_id = new URLSearchParams(location.search).get('session_id');
     const sessionId = session_id ? session_id : "free";
