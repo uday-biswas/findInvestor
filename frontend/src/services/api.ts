@@ -16,6 +16,8 @@ export const endpoints = {
 
     GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
     UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
+    UPGRADE_USING_STRIPE_API: BASE_URL + "/profile/upgradeUser",
+    PAYMENT_SUCCESS_API: BASE_URL + "/profile/paymentSuccess",
 
     COURSE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
     COURSE_VERIFY_API: BASE_URL + "/payment/verifyPayment",

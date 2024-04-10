@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, matchPath, useNavigate } from "react-router-dom";
 import { NavbarLinks } from "../../data/navbar-links";
 import {
@@ -22,7 +22,11 @@ import { RootState } from "../../redux/index";
 const Navbar = () => {
     const { token } = useSelector((store: RootState) => store.auth);
     const user = useSelector((store: RootState) => store.profile.user ? store.profile.user : null);
-    console.log("user", user);
+
+    useEffect(() => {
+        console.log("user from navbar: ", user);
+        // setUser(userDetails);
+    }, [user]);
 
     // const [navVisible, setNavVisible] = useState(false);
     const [detailsModal, setDetailsModal] = useState(false);
@@ -104,7 +108,7 @@ const Navbar = () => {
                                             Silver
                                         </button>
                                     ) : (
-                                        <Link to="/upgrade">
+                                        <Link to="/dashboard/upgrade">
                                             <button className="rounded-[8px] font-semibold border bg-emerald-400 text-black py-1 px-2">
                                                 <FaRegStar className="inline-block mr-1" />
                                                 Upgrade Now
@@ -115,7 +119,7 @@ const Navbar = () => {
                                 <DropdownMenu>
                                     <DropdownMenuTrigger>
                                         <Avatar>
-                                            <AvatarImage src={user ? user.image : null} />
+                                            <AvatarImage src={user.image} />
                                             <AvatarFallback>CN</AvatarFallback>
                                         </Avatar>
                                     </DropdownMenuTrigger>

@@ -14,6 +14,9 @@ import Pitchdecks from './components/pages/Pitchdecks'
 import HomePage from './components/pages/HomePage'
 import PrivateRoute from './components/common/PrivateRoute'
 import Dashboard from './components/pages/Dashboard'
+import Success from './components/pages/Success'
+import Cancel from './components/pages/Cancel'
+import Upgrade from './components/pages/Upgrade'
 
 function App(): React.ReactElement {
 
@@ -37,6 +40,10 @@ function App(): React.ReactElement {
           <Route path="/dashboard/lists" element={<Lists />} />
           <Route path="/dashboard/lists/:id" element={<List />} />
           <Route path="/dashboard/pitchdecks" element={<Pitchdecks />} />
+          <Route path="/dashboard/success" element={<Success />} />
+          <Route path="/dashboard/cancel" element={<Cancel />} />
+          <Route path="/dashboard/upgrade" element={<Upgrade />} />
+          {/* <Route path="/dashboard/billing" element={<Billing />} /> */}
         </Route>
 
         <Route path="/login" element={<Login />} />

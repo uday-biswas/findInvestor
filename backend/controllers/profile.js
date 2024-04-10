@@ -1,6 +1,7 @@
 const Profile = require("../models/profile");
 const User = require("../models/user");
 const pitchdeck = require("../models/pitchdeck");
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 require("dotenv").config();
 
 const updateProfile = async (req, res) => {
@@ -116,8 +117,101 @@ const getAllUserDetails = async (req, res) => {
   }
 };
 
+const upgradeUser = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const membership = req.body.membership;
+    console.log("email : - > ", email);
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const lineitems = [
+      {
+        price_data: {
+          currency: "inr",
+          product_data: {
+            name: membership,
+            description: email,
+          },
+          unit_amount: 100,
+        },
+        quantity: 1,
+      },
+    ];
+
+    const session = await stripe.checkout.sessions.create({
+      // payment_method_types: ["card"],
+      line_items: lineitems,
+      mode: "payment",
+      success_url: `${process.env.FRONTEND_URL}/dashboard/success/?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_URL}/dashboard/cancel`,
+    });
+    console.log("session : - > ", session);
+
+    res.status(200).json({
+      success: true,
+      message: "redirecting to payment gateway",
+      sessionId: session.id,
+    });
+  } catch (error) {
+    console.log("error in upgrading user : - > ", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "fail to fetch user detail",
+      error: error.message,
+    });
+  }
+}
+
+const paymentSuccess = async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.retrieve(
+      req.body.session, {
+      expand: ["line_items"],
+    }
+    );
+    console.log("session : - > ", session);
+    console.log("line items : - > ", session.line_items.data[0].description);
+    const email = req.body.email;
+    const membership = session.line_items.data[0].description;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    const userDetails = await User.findOneAndUpdate(
+      { email },
+      { membership: membership },
+      { new: true }
+    ).populate("additionalDetails");
+    console.log("userDetails : - > ", userDetails);
+    res.status(200).json({
+      success: true,
+      message: "User upgraded successfully",
+      data: userDetails,
+    });
+  } catch (error) {
+    console.log("error in upgrading user : - > ", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "fail to fetch user detail",
+      error: error.message,
+    });
+  }
+}
+
+
 module.exports = {
   updateProfile,
   deleteAccount,
   getAllUserDetails,
+  upgradeUser,
+  paymentSuccess,
 };

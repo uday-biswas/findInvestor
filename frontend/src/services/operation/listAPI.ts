@@ -59,7 +59,7 @@ const deleteList = async (id: string, email: string, dispatch: Dispatch, navigat
         }
         dispatch(setInvestorLists(response.data.lists));
         toast.success("List deleted successfully");
-        navigate("/lists");
+        navigate("dashboard/lists");
     } catch (error: any) {
         const errorResponse = error?.response?.data?.message;
         toast.error(errorResponse);

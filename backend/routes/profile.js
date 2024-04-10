@@ -6,7 +6,9 @@ const { auth } = require("../middleware/auth")
 const {
     updateProfile,
     deleteAccount,
-    getAllUserDetails
+    getAllUserDetails,
+    upgradeUser,
+    paymentSuccess,
 } = require("../controllers/profile")
 
 
@@ -20,5 +22,9 @@ router.get("/getUserDetails", auth, getAllUserDetails)
 router.put("/updateProfile", updateProfile)
 // routes for delete the account
 router.delete("/deleteAccount", auth, deleteAccount)
+// routes for upgrade the user
+router.post("/upgradeUser", upgradeUser)
+// routes for payment success
+router.post("/paymentSuccess", paymentSuccess)
 
 module.exports = router

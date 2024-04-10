@@ -32,7 +32,7 @@ const List = () => {
 
     return (
         <div className="w-11/12 mx-auto mt-4 flex flex-col">
-            <div onClick={() => navigate("/lists")} className="hover:underline hover:cursor-pointer"><ChevronLeft className="inline-block" /> <span>Back to Saved Lists</span></div>
+            <div onClick={() => navigate("/dashboard/lists")} className="hover:underline hover:cursor-pointer"><ChevronLeft className="inline-block" /> <span>Back to Saved Lists</span></div>
             <div className="flex justify-between w-full">
                 <div className="flex flex-col gap-2">
                     <div className="text-2xl font-semibold mt-4">{list.name}</div>
