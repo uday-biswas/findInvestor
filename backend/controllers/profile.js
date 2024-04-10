@@ -150,6 +150,14 @@ const upgradeUser = async (req, res) => {
       mode: "payment",
       success_url: `${process.env.FRONTEND_URL}/dashboard/success/?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.FRONTEND_URL}/dashboard/cancel`,
+      payment_intent_data: {
+        // Create a Payment Intent with the same line items for card details and subscription billing
+        description: `Upgrade to ${membership} for ${email}`,
+        metadata: {
+          userId: user.id,
+          email: email,
+        },
+      },
     });
     console.log("session : - > ", session);
 
@@ -172,11 +180,12 @@ const paymentSuccess = async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.retrieve(
       req.body.session, {
-      expand: ["line_items"],
+      expand: ["line_items", "payment_intent", 'payment_intent.payment_method'],
     }
     );
     console.log("session : - > ", session);
     console.log("line items : - > ", session.line_items.data[0].description);
+    console.log("payment card details : - > ", session.payment_intent.payment_method.card);
     const email = req.body.email;
     const membership = session.line_items.data[0].description;
     const user = await User.findOne({ email });
@@ -191,7 +200,7 @@ const paymentSuccess = async (req, res) => {
       { membership: membership },
       { new: true }
     ).populate("additionalDetails");
-    console.log("userDetails : - > ", userDetails);
+    // console.log("userDetails : - > ", userDetails);
     res.status(200).json({
       success: true,
       message: "User upgraded successfully",
