@@ -185,6 +185,7 @@ const paymentSuccess = async (req, res) => {
     );
     console.log("session : - > ", session);
     console.log("line items : - > ", session.line_items.data[0].description);
+    console.log("payment billing_details : - > ", session.payment_intent.payment_method.billing_details);
     console.log("payment card details : - > ", session.payment_intent.payment_method.card);
     const email = req.body.email;
     const membership = session.line_items.data[0].description;
