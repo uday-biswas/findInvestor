@@ -1,8 +1,6 @@
 import { ArrowUpRight, View, Download } from 'lucide-react';
-import React, { useState } from 'react';
-// import { Viewer } from '@react-pdf-viewer/core'
-// import '@react-pdf-viewer/core/lib/styles/index.css';
-import { Document, Page } from 'react-pdf';
+import React from 'react';
+// import { Document, Page } from 'react-pdf';
 
 interface PitchDeckData {
     _id: string;

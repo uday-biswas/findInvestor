@@ -1,8 +1,6 @@
-import { RootState } from '@/redux';
 import { endpoints } from '@/services/api';
 import { apiConnector } from '@/services/apiConnector';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { ScrollArea } from '../ui/scroll-area';
 import { PitchDeckSelect } from '@/data/PitchDeckSelect';
 import { Input } from '../ui/input';
