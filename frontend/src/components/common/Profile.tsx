@@ -13,6 +13,8 @@ import { RootState } from "@/redux";
 import { updateProfile } from "@/services/operation/profileAPI";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Textarea } from "../ui/textarea";
 
 interface ProfileProps {
     detailsModal: boolean;
@@ -54,13 +56,23 @@ const Profile: React.FC<ProfileProps> = ({ detailsModal, setDetailsModal }) => {
                         <Label htmlFor="gender">
                             Gender
                         </Label>
-                        <Input
+                        {/* <Input
                             id="gender"
                             defaultValue={user.additionalDetails.gender ? user.additionalDetails.gender : ""}
                             className="col-span-3 rounded-[5px]"
                             value={gender}
                             onChange={(e) => setGender(e.target.value)}
-                        />
+                        /> */}
+                        <Select onValueChange={(value) => setGender(value)} defaultValue={user.additionalDetails.gender ? user.additionalDetails.gender : ""}>
+                            <SelectTrigger className="w-[180px] rounded-[5px]">
+                                <SelectValue placeholder="Gender" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="male">Male</SelectItem>
+                                <SelectItem value="female">Female</SelectItem>
+                                <SelectItem value="other">Other</SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div className="flex flex-col gap-3">
                         <Label htmlFor="contact">
@@ -90,7 +102,7 @@ const Profile: React.FC<ProfileProps> = ({ detailsModal, setDetailsModal }) => {
                         <Label htmlFor="about">
                             About
                         </Label>
-                        <Input
+                        <Textarea
                             id="about"
                             defaultValue={user.additionalDetails.about ? user.additionalDetails.about : ""}
                             className="col-span-3 rounded-[5px]"

@@ -17,6 +17,7 @@ import Dashboard from './components/pages/Dashboard'
 import Success from './components/pages/Success'
 import Cancel from './components/pages/Cancel'
 import Upgrade from './components/pages/Upgrade'
+import Billing from './components/pages/Billing'
 
 function App(): React.ReactElement {
 
@@ -43,7 +44,7 @@ function App(): React.ReactElement {
           <Route path="/dashboard/success" element={<Success />} />
           <Route path="/dashboard/cancel" element={<Cancel />} />
           <Route path="/dashboard/upgrade" element={<Upgrade />} />
-          {/* <Route path="/dashboard/billing" element={<Billing />} /> */}
+          <Route path="/dashboard/billing" element={<Billing />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

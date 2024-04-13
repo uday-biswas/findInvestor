@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import UpdateList from '../common/UpdateList';
 import DeleteList from '../common/DeleteList';
+import { Parser } from '@json2csv/plainjs';
 
 const Lists: React.FC = () => {
 
@@ -38,7 +39,29 @@ const Lists: React.FC = () => {
             ...prevState,
             [id]: !prevState[id]
         }));
-    }
+    };
+
+    const downloadCSV = (list: any) => {
+        try {
+            const fields = ['Name', 'Image', 'Company', 'Role', 'TypeOfFund', 'City', 'Country', 'StagePreferences', 'IndustryPreferences', 'PastIndustryPreferences', 'EmailAddress', 'PhoneNumber', 'Websites', 'FB', 'Twitter', 'Linkedin'];
+            const opts = { fields };
+            const parser = new Parser(opts);
+            const csv = parser.parse(list.investors);
+            // console.log(csv);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `${list.name}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error('Error parsing JSON to CSV:', err);
+        }
+    };
 
     return (
         <div className='flex flex-col w-11/12 mx-auto my-8 h-[calc(100vh-16rem)]'>
@@ -54,7 +77,7 @@ const Lists: React.FC = () => {
                                 <div className='text-lg font-bold my-2 hover:underline hover:cursor-pointer' onClick={() => openList(list._id)}>{list.name}</div>
                                 <p className='text-sm text-gray-400 font-semibold'>{list.desc}</p>
                                 <div className='flex gap-3 mx-auto my-2'>
-                                    <Button variant="outline" className='mt-4 w-3/4 text-center rounded-[5px]'>
+                                    <Button variant="outline" className='mt-4 w-3/4 text-center rounded-[5px]' onClick={() => downloadCSV(list)}>
                                         <div>
                                             Download CSV
                                             <Download className='ml-2 inline-block size-4' />

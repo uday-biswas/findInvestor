@@ -93,16 +93,16 @@ const login = async (email: string, password: string, navigate: NavigateFunction
     }
 
     toast.success("Login Successful");
-    const userImage = response.data?.user?.image
-      ? response.data.user.image
-      : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`;
+    // const userImage = response.data?.user?.image
+    //   ? response.data.user.image
+    //   : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`;
 
-    const updatedUser = { ...response.data.user, image: userImage };
+    // const updatedUser = { ...response.data.user, image: userImage };
     localStorage.setItem("token", JSON.stringify(response.data.token));
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem("user", JSON.stringify(response?.data.user));
 
     dispatch(setToken(response.data.token));
-    dispatch(setUser(updatedUser));
+    dispatch(setUser(response?.data.user));
     console.log("login user", response.data.user)
 
     navigate("/dashboard/investors");

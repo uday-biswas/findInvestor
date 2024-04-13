@@ -41,6 +41,11 @@ const userSchema = new mongoose.Schema({
                 ref: "Profile",
                 required: true
         },
+        invoice: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Invoice",
+                required: true
+        },
         token: {
                 type: String
         },

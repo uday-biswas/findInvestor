@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import InvestorCard from "../common/InvestorCard";
 import DeleteList from "../common/DeleteList";
+import UpdateList from "../common/UpdateList";
 
 const List = () => {
     const investorLists = useSelector((state: RootState) => state.list.investorLists);
@@ -13,6 +14,7 @@ const List = () => {
     const [lists, setLists] = useState([]);
     const [list, setList] = useState<any>(null);
     const [deleteOpen, setDeleteOpen] = useState(false);
+    const [editDetailsModal, setEditDetailsModal] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -39,7 +41,9 @@ const List = () => {
                     <div className="text-gray-500 font-medium">{list.desc}</div>
                 </div>
                 <div className="flex">
-                    <Button className="mt-4 ml-4 rounded-[5px] font-semibold"><span>Edit details</span><PencilLine className="ml-2 inline-block size-4" /></Button>
+                    <Button className="mt-4 ml-4 rounded-[5px] font-semibold" onClick={() => setEditDetailsModal(true)}>
+                        <span>Edit details</span><PencilLine className="ml-2 inline-block size-4" />
+                    </Button>
                     <DeleteList id={list._id} deleteOpen={deleteOpen} setDeleteOpen={setDeleteOpen} />
                     <Button variant="outline" onClick={() => setDeleteOpen(true)} className="mt-4 ml-4 rounded-[5px] text-red-400 
                 border-red-400 hover:text-red-500 hover:bg-black">
@@ -55,6 +59,7 @@ const List = () => {
                     ))}
                 </div>
             </div>
+            {editDetailsModal && <UpdateList isOpen={editDetailsModal} setIsOpen={setEditDetailsModal} list={list} />}
         </div>
     );
 }

@@ -99,18 +99,18 @@ const Navbar = () => {
                                 {
                                     user.membership === "gold" ? (
                                         <button className="rounded-[8px] font-semibold border bg-yellow-400 text-black py-1 px-2">
-                                            <FaRegStar className="inline-block mr-1" />
+                                            <FaRegStar className="inline-block mr-1 mt-[-4px]" />
                                             Gold
                                         </button>
                                     ) : user.membership === "silver" ? (
                                         <button className="rounded-[8px] font-semibold border text-white bg-green-700 py-1 px-2">
-                                            <FaRegStar className="inline-block mr-1" />
+                                            <FaRegStar className="inline-block mr-1 mt-[-4px]" />
                                             Silver
                                         </button>
                                     ) : (
                                         <Link to="/dashboard/upgrade">
                                             <button className="rounded-[8px] font-semibold border bg-emerald-400 text-black py-1 px-2">
-                                                <FaRegStar className="inline-block mr-1" />
+                                                <FaRegStar className="inline-block mr-1 mt-[-4px]" />
                                                 Upgrade Now
                                             </button>
                                         </Link>
@@ -137,7 +137,7 @@ const Navbar = () => {
                                                 <span>Profile</span>
                                                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                                             </DropdownMenuItem>
-                                            <Link to="/billing">
+                                            <Link to="/dashboard/billing">
                                                 <DropdownMenuItem>
                                                     <CreditCard className="mr-2 h-4 w-4" />
                                                     <span>Billing</span>

@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Profile = require("../models/profile");
 const Otp = require("../models/otp");
+const Invoice = require("../models/invoice");
 const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -133,6 +134,23 @@ const signup = async (req, res) => {
       about: null,
       contactNumber: null,
     });
+    const invoice = await Invoice.create({
+      address_city: null,
+      address_country: null,
+      address_line1: null,
+      address_line2: null,
+      address_postal_code: null,
+      address_state: null,
+      email: email,
+      name: null,
+      card_brand: null,
+      card_last4: null,
+      card_exp_month: null,
+      card_exp_year: null,
+      amount: 0,
+      currency: null,
+      membership: null,
+    });
     const user = await User.create({
       firstName,
       lastName,
@@ -140,8 +158,9 @@ const signup = async (req, res) => {
       password: hashedPassword,
       additionalDetails: profileDetail._id,
       image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
+      invoice: invoice._id,
     });
-    // return response
+
     return res.status(200).json({
       success: true,
       message: "user created successfully",
@@ -171,7 +190,7 @@ const login = async (req, res) => {
     }
 
     // check user exit or not
-    const user = await User.findOne({ email }).populate("additionalDetails");
+    const user = await User.findOne({ email }).populate("additionalDetails").populate("invoice");
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -195,6 +214,7 @@ const login = async (req, res) => {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
         httpOnly: true,
       };
+      user.password = undefined;
       return res.cookie("token", token, options).status(200).json({
         success: true,
         message: "login successfully",
