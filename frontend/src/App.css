@@ -1,0 +1,18 @@
+.bg-image {
+    height: 100vh;
+    background: url("./assets/getfunded_back.jpg") center/cover no-repeat;
+    filter: blur(3px);
+  }
+  
+  .bg-text {
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -210%);
+    z-index: 2;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+  }
